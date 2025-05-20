@@ -1,15 +1,16 @@
-import HomePage from "./components/HomePage/HomePage"
+import { DataProvider } from "./components/context/context";
+import HomePage from "./components/HomePage/HomePage";
 
 function App() {
-
   return (
     <>
       <div>
-        <HomePage/>
+        <DataProvider>
+          <HomePage />
+        </DataProvider>
       </div>
-        
     </>
-  )
+  );
 }
 
-export default App
+export default App;

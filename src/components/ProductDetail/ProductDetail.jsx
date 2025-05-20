@@ -1,46 +1,51 @@
-import React from 'react';
-import './productDetail.css';
+import React, { useContext } from "react";
+import "./productDetail.css";
+import { DataContext } from "../context/context";
 
 function ProductDetail() {
-  const product = {
-    id: 1,
-    title: 'Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops',
-    price: 109.95,
-    description:
-      'Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday',
-    category: "men's clothing",
-    image: 'https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg',
-    rating: {
-      rate: 3.9,
-      count: 120,
-    },
-  };
+  const data = useContext(DataContext);
+
+  const product = data.ProductList.filter((x) => x.id === data.checkProduct);
 
   const handleAddToCart = () => {
-    alert(`Added "${product.title}" to cart`);
+    data.setCart([...data.cart, product]);
+    alert(`Added "${product[0].title}" to cart`);
   };
 
   return (
-    <div className='product-page'>
-      <div className='product-card'>
-        <img src={product.image} alt={product.title} className='product-img' />
+    <div className="product-page">
+      <div className="product-card">
+        <img
+          src={product[0].image}
+          alt={product.title}
+          className="product-img"
+        />
 
-        <div className='product-info'>
-          <h2 className='product-title'>
-            {product.title.length > 50 ? product.title.slice(0, 50) + '...' : product.title}
-          </h2>
-
-          <p className='product-description'>{product.description}</p>
-          <p className='product-category'><strong>Category:</strong> {product.category}</p>
-
-          <p className='product-price'><strong>Price:</strong> ${product.price}</p>
-
-          <p className='product-rating'>
-            <strong>Rating:</strong> {product.rating.rate} ⭐ ({product.rating.count} reviews)
+        <div className="product-info">
+          <h2 className="product-title">{product[0].title}</h2>
+          <p className="product-description">{product[0].description}</p>
+          <p className="product-category">
+            <strong>Category:</strong> {product[0].category}
           </p>
 
-          <button className='add-to-cart-btn' onClick={handleAddToCart}>
+          <p className="product-price">
+            <strong>Price:</strong> ${product[0].price}
+          </p>
+
+          <p className="product-rating">
+            <strong>Rating:</strong> {product[0].rating.rate} ⭐ (
+            {product[0].rating.count} reviews)
+          </p>
+
+          <button className="add-to-cart-btn" onClick={handleAddToCart}>
             Add to Cart
+          </button>
+
+          <button
+            className="add-to-cart-btn"
+            onClick={() => data.setCheckProduct(0)}
+          >
+            Back
           </button>
         </div>
       </div>

@@ -1,35 +1,43 @@
-
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import './products.css';
+import React, { useContext } from "react";
+import "./products.css";
+import { DataContext } from "../context/context";
+import ProductDetail from "../ProductDetail/ProductDetail";
 
 function Products() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    axios.get('https://fakestoreapi.com/products')
-      .then((response) => {
-        setProducts(response.data);
-      })
-      .catch((error) => {
-        console.error('Error fetching data:', error);
-      });
-  }, []);
+  const data = useContext(DataContext);
 
   return (
-    <div className='productsContainer'>
-      {products.map((product) => (
-        <div className='productWrapper' key={product.id}>
-          <div className='productTitle'>
-            {product.title.length > 17 ? product.title.slice(0, 17) + '...' : product.title}
-            </div>
-          <div className='productImage'>
-            <img src={product.image} alt={product.title} className='productImgSize' />
-          </div>
-          <div className='productPrice'>Price: ${product.price}</div>
-          <div className='productRating'>Rating: {product.rating.rate}</div>
+    <div>
+      {data.checkProduct !== 0 ? (
+        <div>
+          <ProductDetail />
         </div>
-      ))}
+      ) : (
+        <div className="productsContainer">
+          {data.ProductList.map((product) => (
+            <div
+              className="productWrapper"
+              onClick={() => data.setCheckProduct(product.id)}
+              key={product.id}
+            >
+              <div className="productTitle">
+                {product.title.length > 17
+                  ? product.title.slice(0, 17) + "..."
+                  : product.title}
+              </div>
+              <div className="productImage">
+                <img
+                  src={product.image}
+                  alt={product.title}
+                  className="productImgSize"
+                />
+              </div>
+              <div className="productPrice">Price: ${product.price}</div>
+              <div className="productRating">Rating: {product.rating.rate}</div>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
